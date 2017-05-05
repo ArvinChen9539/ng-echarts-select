@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="cn" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>echartsUI Demo</title>
+    <meta name="description" content="功能演示">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- build:css css/libStyle.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css css/appStyle.css -->
+    <link rel="stylesheet" href="css/app.css">
+    <!-- endbuild -->
+
+
+    <!-- build:js js/libAll.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/echarts/dist/echarts.min.js"></script>
+    <script src="../bower_components/echarts/theme/macarons.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+
+    <!-- build:js js/appAll.js -->
+    <!-- directives-->
+    <script src="./src/js/echartsUI.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/ctrl/chartCtrl.js"></script>
+    <!-- endbuild -->
+</head>
+<body>
+<div ng-controller="chartCtrl">
+    <div chart-home class="row" style="margin-top: 20px">
+        <div class="col-lg-6" style="height: 350px" click-fun="clickFun" chart-title="可多选,可取消最后一项" is-cancel="true" is-multiple="true" bar-chart ng-model="chartOptions"></div>
+        <div class="col-lg-6" style="height: 350px" click-fun="clickFun" chart-title="不可多选,可取消最后一项" is-cancel="true"  pie-chart ng-model="chartOptions"></div>
+    </div>
+    <div chart-home class="row" style="margin-top: 20px">
+        <div class="col-lg-6" style="height: 350px" click-fun="clickFun" chart-title="不可多选,不可取消最后一项"  chart-type="line" bar-chart ng-model="chartOptions"></div>
+    </div>
+</div>
+</body>
+</html>

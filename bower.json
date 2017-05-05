@@ -1,0 +1,30 @@
+{
+  "name": "echarts-ui",
+  "author": "PhysicalPoint",
+  "description": "echartsUI",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.6.4",
+    "lodash": "^4.17.4",
+    "bootstrap": "^3.3.7",
+    "echarts": "^3.4.0"
+  },
+  "overrides": {
+    "echarts": {
+      "main": [
+        "dist/echarts.min.js",
+        "theme/macarons.js"
+      ]
+    },
+    "bootstrap": {
+      "src": "dist",
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap-theme.css",
+        "dist/js/bootstrap.min.js",
+        "/fonts/*.*"
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "sysName":"echartsUI",
+  "port": 80,
+  "distPath": "build",
+  "appPath": "app",
+  "revPath": "build/rev",
+  "bowerPath": "bower_components",
+  "browsers": [
+    "ie >= 9",
+    "Firefox >= 20",
+    "> 5%",
+    "Android 4.1",
+    "iOS 7.1",
+    "Chrome > 31"
+  ],
+  "envs": {
+    "dev": {
+      "APP_VERSION_TYPE": "dev",
+      "SERVICE_URL":"http://localhost:8080",
+      "BASE_PATH": "",
+      "SERVICE_API_PATH": "/",
+      "BAIDU_MAP_KEY": ""
+    },
+    "pst": {
+      "APP_VERSION_TYPE": "pst",
+      "SERVICE_URL":"http://localhost:8080",
+      "BASE_PATH": "",
+      "SERVICE_API_PATH": "/",
+      "BAIDU_MAP_KEY": ""
+    },
+    "demo": {
+      "APP_VERSION_TYPE": "demo",
+      "SERVICE_URL":"http://localhost:8080",
+      "BASE_PATH": "",
+      "SERVICE_API_PATH": "/",
+      "BAIDU_MAP_KEY": ""
+    },
+    "prod": {
+      "APP_VERSION_TYPE": "prod",
+      "SERVICE_URL":"http://localhost:8080",
+      "BASE_PATH": "",
+      "SERVICE_API_PATH": "/",
+      "BAIDU_MAP_KEY": ""
+    }
+  }
+}
