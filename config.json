@@ -1,6 +1,6 @@
 {
   "sysName":"echartsUI",
-  "port": 80,
+  "port": 81,
   "distPath": "build",
   "appPath": "app",
   "revPath": "build/rev",

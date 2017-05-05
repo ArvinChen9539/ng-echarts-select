@@ -9,8 +9,6 @@
 
     <!-- build:css css/libStyle.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -23,10 +21,9 @@
     <!-- bower:js -->
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/lodash/lodash.js"></script>
-    <script src="../bower_components/jquery/dist/jquery.js"></script>
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../bower_components/echarts/dist/echarts.min.js"></script>
     <script src="../bower_components/echarts/theme/macarons.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -41,12 +38,12 @@
 </head>
 <body>
 <div ng-controller="chartCtrl">
-    <div chart-home class="row" style="margin-top: 20px">
-        <div class="col-lg-6" style="height: 350px" click-fun="clickFun" chart-title="可多选,可取消最后一项" is-cancel="true" is-multiple="true" bar-chart ng-model="chartOptions"></div>
-        <div class="col-lg-6" style="height: 350px" click-fun="clickFun" chart-title="不可多选,可取消最后一项" is-cancel="true"  pie-chart ng-model="chartOptions"></div>
+    <div chart-home style="margin-top: 20px">
+        <div  style="height: 350px" click-fun="clickFun" chart-title="可多选,可取消最后一项" is-cancel="true" is-multiple="true" bar-chart ng-model="chartOptions"></div>
+        <div  style="height: 350px" click-fun="clickFun" chart-title="不可多选,可取消最后一项" is-cancel="true"  pie-chart ng-model="chartOptions"></div>
     </div>
-    <div chart-home class="row" style="margin-top: 20px">
-        <div class="col-lg-6" style="height: 350px" click-fun="clickFun" chart-title="不可多选,不可取消最后一项"  chart-type="line" bar-chart ng-model="chartOptions"></div>
+    <div chart-home  style="margin-top: 20px">
+        <div style="height: 350px" click-fun="clickFun" chart-title="不可多选,不可取消最后一项"  chart-type="line" bar-chart ng-model="chartOptions"></div>
     </div>
 </div>
 </body>

@@ -21,7 +21,7 @@
     "angular": ">=1.5",
     "lodash": "^4.17.4",
     "echarts": "^3.4.0",
-    "jquery": "^3.2.1"
+    "jquery": "^1.12.4 "
   },
   "devDependencies": {
     "angular": ">=1.5",
@@ -32,7 +32,8 @@
   "resolutions": {
     "angular": "1.6.1",
     "lodash": "^4.17.4",
-    "echarts": "^3.4.0"
+    "echarts": "^3.4.0",
+    "jquery": "^1.12.4 "
   },
   "overrides": {
     "echarts": {
