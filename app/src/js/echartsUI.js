@@ -57,7 +57,7 @@
                     }
                 };
                 if(this.chartI){
-                    chartI = _.extend(true,chartI,this.chartI);
+                    chartI = $.extend(true,chartI,this.chartI);
                 }
                 return {
                     theme: theme,
@@ -276,7 +276,7 @@
         $scope.isChart = function (type, scope) {
             var o = $rootScope.GET_O('option.series[0].type', scope);
             if (_.includes($scope.config().chartConfig[type].type, o)) {
-                scope.option = _.extend(true, $scope.config().chartConfig[type].option, scope.option);
+                scope.option = $.extend(true, $scope.config().chartConfig[type].option, scope.option);
                 return true;
             }
             return false;
@@ -384,7 +384,7 @@
 
                     //组合默认参数
                     if (!scope.p_noExtend) {
-                        scope.option = _.extend(true, $scope.config().option, scope.option);
+                        scope.option = $.extend(true, $scope.config().option, scope.option);
                     }
                     //组合颜色参数
                     if (!scope.p_noSeriesE) {
@@ -393,11 +393,11 @@
                                 //饼图官方交互
                                 //为饼图判断多选和单选
                                 if ((scope.isMultiple || $scope.isMultiple) && !scope.p_noClickMark) {//多选
-                                    scope.option.series[index] = _.extend(true, $scope.config().seriesItem({selectedMode: 'multiple'}), item);
+                                    scope.option.series[index] = $.extend(true, $scope.config().seriesItem({selectedMode: 'multiple'}), item);
                                 } else if ((scope.clickFun || parent.clickFun) && !scope.p_noClickMark) {//单选
-                                    scope.option.series[index] = _.extend(true, $scope.config().seriesItem({selectedMode: 'single'}), item);
+                                    scope.option.series[index] = $.extend(true, $scope.config().seriesItem({selectedMode: 'single'}), item);
                                 } else {//没有交互效果
-                                    scope.option.series[index] = _.extend(true, $scope.config().seriesItem({}), item);
+                                    scope.option.series[index] = $.extend(true, $scope.config().seriesItem({}), item);
                                 }
 
                             }
@@ -405,9 +405,9 @@
                             if (!scope.p_noDataE) {
                                 $.each(item.data, function (dIndex, dItem) {
                                     if (_.isObject(dItem)) {
-                                        scope.option.series[index].data[dIndex] = _.extend(true, $scope.config().dataItem, dItem);
+                                        scope.option.series[index].data[dIndex] = $.extend(true, $scope.config().dataItem, dItem);
                                     } else {
-                                        scope.option.series[index].data[dIndex] = _.extend(true, $scope.config().dataItem, {value: dItem});
+                                        scope.option.series[index].data[dIndex] = $.extend(true, $scope.config().dataItem, {value: dItem});
                                     }
                                 });
                             }
@@ -416,11 +416,11 @@
 
                     //直角系图标坐标系默认配置
                     if ($scope.isChart('xy', scope)) {
-                        scope.option = _.extend(true, $scope.config().chartConfig.xy.option, scope.option);
+                        scope.option = $.extend(true, $scope.config().chartConfig.xy.option, scope.option);
                     }
                     //饼图默认配置
                     if ($scope.isChart('pie', scope)) {
-                        scope.option = _.extend(true, $scope.config().chartConfig.pie.option, scope.option);
+                        scope.option = $.extend(true, $scope.config().chartConfig.pie.option, scope.option);
                     }
 
                     //设置图表标题
@@ -483,7 +483,7 @@
      * 新建指令模板
      */
     app.directive('exampleChart', ['$rootScope', function ($rootScope) {
-        return _.extend(true, {
+        return $.extend(true, {
             link: function (scope, ele, attrs, parent) {
                 //=============p_参数说明及备注==========================
                 //p_noExtend 是否组合父指令提供的必要参数 delft:false(组合)
@@ -555,7 +555,7 @@
                         subtext: options.text
                     }
                 };
-                _.extend(true, $scope.option, a);
+                $.extend(true, $scope.option, a);
                 $scope.chart.setOption(a, false);
             };
 
@@ -569,7 +569,7 @@
      */
     app.directive('pieChart', ['$rootScope', '$compile', '$echartsOptions',
         function ($rootScope, $compile, $echartsOptions) {
-            return _.extend(true, {
+            return $.extend(true, {
                 link: function (scope, ele, attrs, parent) {
                     /**
                      * 数据及事件处理
@@ -626,7 +626,7 @@
      * * 参数格式data={name:'名称',options:[{name:'',value:'',id:"用来区分点击的区块如某id"}]}
      */
     app.directive('barChart', ['$rootScope', '$echartsOptions', function ($rootScope, $echartsOptions) {
-        return _.extend(true, {
+        return $.extend(true, {
             scope: {
                 chartType: '@',//图表类型默认bar  可配置为line
                 barWidth: '@',//单个柱状图宽度
