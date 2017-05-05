@@ -1,35 +1,30 @@
 {
   "name": "echarts-ui",
-  "homepage": "https://github.com/ArvinChen9539/echartsUI",
-  "description": "用于处理echarts的点击标记效果,以及多图表平交互",
-  "main": [
-    "app/src/js/echartsUI.js"
-  ],
-  "keywords": [
-    "echarts",
-    "mark",
-    "click"
-  ],
-  "authors": "ArvinChen9539",
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components"
-  ],
+  "author": "PhysicalPoint",
+  "description": "echartsUI",
+  "version": "1.0.0",
+  "private": true,
   "dependencies": {
-    "angular": ">=1.5",
+    "angular": "^1.6.4",
     "lodash": "^4.17.4",
+    "bootstrap": "^3.3.7",
     "echarts": "^3.4.0"
   },
-  "devDependencies": {
-    "angular": ">=1.5",
-    "lodash": "^4.17.4",
-    "echarts": "^3.4.0"
-  },
-  "resolutions": {
-    "angular": "1.6.1",
-    "lodash": "^4.17.4",
-    "echarts": "^3.4.0"
+  "overrides": {
+    "echarts": {
+      "main": [
+        "dist/echarts.min.js",
+        "theme/macarons.js"
+      ]
+    },
+    "bootstrap": {
+      "src": "dist",
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap-theme.css",
+        "dist/js/bootstrap.min.js",
+        "/fonts/*.*"
+      ]
+    }
   }
 }
