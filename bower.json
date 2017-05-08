@@ -3,7 +3,7 @@
   "homepage": "https://github.com/ArvinChen9539/ng-echarts-select",
   "description": "用于处理echarts作为查询条件,以及多图表交互的功能",
   "main": [
-    "app/src/js/echartsUI.js"
+    "app/src/js/ng-echarts-select.js"
   ],
   "keywords": [
     "echarts",
