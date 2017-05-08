@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="cn" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>echartsUI Demo</title>
+    <meta name="description" content="功能演示">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+
+    <link rel="stylesheet" href="css/appStyle.css">
+
+
+    <script src="js/libAll.js"></script>
+
+
+    <script src="js/appAll.js"></script>
+</head>
+<body>
+<div ng-controller="chartCtrl">
+    <div chart-home style="margin-top: 20px">
+        <div  style="height: 350px" click-fun="clickFun" chart-title="可多选,可取消最后一项" is-cancel="true" is-multiple="true" bar-chart ng-model="chartOptions"></div>
+        <div  style="height: 350px" click-fun="clickFun" chart-title="不可多选,可取消最后一项" is-cancel="true"  pie-chart ng-model="chartOptions"></div>
+    </div>
+    <div chart-home  style="margin-top: 20px">
+        <div style="height: 350px" click-fun="clickFun" chart-title="不可多选,不可取消最后一项"  chart-type="line" bar-chart ng-model="chartOptions"></div>
+    </div>
+</div>
+</body>
+</html>

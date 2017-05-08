@@ -8,7 +8,6 @@
 out
 gen
 node_modules
-build
 bower_components
 app/css/less/less.css
 app/js/libs/noMin/
