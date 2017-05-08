@@ -18,13 +18,44 @@
     <script src="js/appAll.js"></script>
 </head>
 <body>
-<div ng-controller="chartCtrl">
-    <div chart-home style="margin-top: 20px">
-        <div  style="height: 350px" click-fun="clickFun" chart-title="可多选,可取消最后一项" is-cancel="true" is-multiple="true" bar-chart ng-model="chartOptions"></div>
-        <div  style="height: 350px" click-fun="clickFun" chart-title="不可多选,可取消最后一项" is-cancel="true"  pie-chart ng-model="chartOptions"></div>
+<div ng-controller="chartDemoCtrl">
+    <H3>选中数据请查看控制台</H3>
+    <H5>组合选中(可多选)</H5>
+    <div chart-home
+         selecteds="t"
+         click-fun="tc"
+         is-multiple="true"
+         style="margin-top: 20px">
+        <div  style="height: 350px;max-width: 750px;margin: auto"
+              group-key="1"
+              click-fun="clickFun"
+              legend-x="left"
+              bar-chart
+              ng-model="chartOptions"></div>
+        <div  style="height: 350px;max-width: 750px;margin: auto"
+              group-key="2"
+              click-fun="clickFun"
+              pie-chart
+              ng-model="chartOptions"></div>
     </div>
-    <div chart-home  style="margin-top: 20px">
-        <div style="height: 350px" click-fun="clickFun" chart-title="不可多选,不可取消最后一项"  chart-type="line" bar-chart ng-model="chartOptions"></div>
+
+    <H5>组合选中(不可多选)</H5>
+    <div chart-home
+         style="margin-top: 20px">
+        <div style="height: 350px;max-width: 750px;margin: auto"
+             group-key="1"
+             click-fun="clickFun"
+             chart-type="line"
+             legend-x="left"
+             bar-chart
+             ng-model="chartOptions"></div>
+        <div style="height: 350px;max-width: 750px;margin: auto"
+             group-key="2"
+             click-fun="clickFun"
+             chart-type="bar"
+             legend-x="left"
+             bar-chart
+             ng-model="chartOptions"></div>
     </div>
 </div>
 </body>

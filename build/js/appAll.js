@@ -18,7 +18,7 @@
                         clickFun: '=',//点击函数(第一个参数是点击的对象,第二个参数是可能用掉的其他信息,第三个参数是当前选中的对象数组)
                         isCancel: '@',//是否禁止最后一个取消标记
                         isMultiple: '@',//图表是否多选
-                        groupKey: '@',//分组关键字-用于在父指令中区分不同的子指令
+                        groupKey: '@',//分组关键字-用于在父指令中区分不同的子指令(如果没有这个属性各个图表不会相互影响,如选中一个图表时清除另一个图表的选中数据等)
                         attrName: '=',//自定义属性名称
                         chartI: '=?',//交互集合
                         styleOption: '@',//图表宽高设置
@@ -56,15 +56,15 @@
                         $scope.chart.setOption(a, false);
                     }
                 };
-                if(this.chartI){
-                    chartI = $.extend(true,chartI,this.chartI);
+                if (this.chartI) {
+                    chartI = $.extend(true, chartI, this.chartI);
                 }
                 return {
                     theme: theme,
                     chartConfig: chartConfig,
                     markColor: markColor,
                     markWidth: markWidth,
-                    chartI:chartI
+                    chartI: chartI
                 }
             };
         }]);
@@ -154,7 +154,7 @@
                         return true;
                     }
                     //清除图表选中状态
-                    item.scope.chartI.clearSelected();
+                    item.scope.chartI.clearSelected(item.scope);
                 });
                 scope.selectedRes = angular.copy(scope.selected);
             }
@@ -336,6 +336,8 @@
                             return true;
                         }
                     });
+                }else {
+                    //params.event.event.stopPropagation();
                 }
             }
         };
@@ -366,7 +368,6 @@
 
             //创建监听事件
             scope.$watch('ngModel', function (data) {
-                console.log(ele);
                 if (!scope.chart) {
                     scope.chart = echarts.init(ele[0], $echartsOptions.theme);
                 } else {
@@ -495,42 +496,6 @@
             if ($scope.chartI === undefined) {
                 $scope.chartI = $echartsOptions.chartI;
             }
-
-            /**
-             * 清除图表选中状态
-             */
-            $scope.chartI.clearSelected = function () {
-                //取消所有标记
-                $.each($scope.option.series, function (indexS, itemS) {
-                    $.each($scope.option.series[indexS].data, function (index1, item1) {
-                        $scope.option.series[indexS].data[index1].itemStyle.normal.borderColor = undefined;
-                        $scope.option.series[indexS].data[index1].itemStyle.normal.borderWidth = '0';
-                    });
-                });
-
-                //删除选中数据
-                _.remove($scope.p_clickIndex, function (i) {
-                    return true;
-                });
-                _.remove($scope.selected, function (i) {
-                    return true;
-                });
-                //改变图表颜色配置后立即重新加载图表配置
-                $scope.chart.setOption($scope.option, true);
-            };
-            /**
-             * 设置副标题
-             */
-            $scope.chartI.setSubtext = function (options) {
-                var a = {
-                    title: {
-                        subtext: options.text
-                    }
-                };
-                $.extend(true, $scope.option, a);
-                $scope.chart.setOption(a, false);
-            };
-
         };
         $scope.init();
     }]);
@@ -542,6 +507,10 @@
     app.directive('pieChart', ['$rootScope', '$compile', '$echartsOptions',
         function ($rootScope, $compile, $echartsOptions) {
             return $.extend(true, {
+                scope:{
+                    legendX:'@',//'left'
+                    legendY:'@'
+                },
                 link: function (scope, ele, attrs, parent) {
                     /**
                      * 数据及事件处理
@@ -557,7 +526,8 @@
                             },
                             legend: {
                                 orient: 'vertical',
-                                x: 'left',
+                                x: scope.legendX?scope.legendX:'left',
+                                y: scope.legendY?scope.legendY:undefined,
                                 data: [],
                             },
                             series: [{
@@ -599,10 +569,13 @@
      */
     app.directive('barChart', ['$rootScope', '$echartsOptions', function ($rootScope, $echartsOptions) {
         return $.extend(true, {
+            controller: "chartCtrl",
             scope: {
                 chartType: '@',//图表类型默认bar  可配置为line
                 barWidth: '@',//单个柱状图宽度
-                chartColor: '@'
+                chartColor: '@',
+                legendX:'@',//'left'
+                legendY:'@'
             },
             link: function (scope, ele, attrs, parent) {
                 /**
@@ -610,11 +583,12 @@
                  * @param data
                  */
                 scope.prepareChart = function (data) {
-                    console.log(data);
                     //图标数据配置模板
                     scope.option = {
                         //图表模板
                         legend: {
+                            x:scope.legendX?scope.legendX:undefined,
+                            y:scope.legendY?scope.legendY:undefined,
                             data: []
                         },
                         xAxis: [
@@ -716,12 +690,14 @@ app.directive('exampleChart', ['$echartsOptions', function ($echartsOptions) {
 /**
  * Created by ArvinChen on 2017/03/14.
  */
-app.controller('chartCtrl', ['$scope',
+app.controller('chartDemoCtrl', ['$scope',
     function ($scope) {
         $scope.test = 11111;
-
         $scope.chartOptions = {name: '测1', options: [{name:'1',value: 10}, {name:'2',value: 20},{name:'3',value: 30}]};
         $scope.clickFun = function () {
+            //console.log(arguments);
+        };
+        $scope.tc = function(){
             console.log(arguments);
         };
         /**
