@@ -3,7 +3,7 @@
  */
 (function (window, angular, undefined) {
     var app = angular
-        .module('echartsUI', []).provider('$echartsOptions', [function () {
+        .module('ng-echarts-select', []).provider('$echartsOptions', [function () {
             this.$get = function () {
                 var theme = this.theme ? this.theme : 'macarons';//默认echarts主题
                 var chartConfig = {//图表ctrl默认配置
