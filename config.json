@@ -1,5 +1,5 @@
 {
-  "sysName":"echartsUI",
+  "sysName":"ng-echarts-select",
   "port": 81,
   "distPath": "build",
   "appPath": "app",

@@ -1,7 +1,7 @@
 {
-  "name": "echartsUI",
+  "name": "ng-echarts-select",
   "author": "PhysicalPoint",
-  "description": "echartsUI",
+  "description": "ng-echarts-select",
   "private": true,
   "engines": {
     "node": ">= 0.10.0"
