@@ -27,33 +27,33 @@
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
                 var markWidth = this.markWidth ? this.markWidth : 2;//点击标记的宽度
                 var chartI = {//自定义交互事件
-                    clearSelected: function ($scope) {//清除图表选中状态
+                    clearSelected: function () {//清除图表选中状态
                         //取消所有标记
-                        $.each($scope.option.series, function (indexS, itemS) {
-                            $.each($scope.option.series[indexS].data, function (index1, item1) {
-                                $scope.option.series[indexS].data[index1].itemStyle.normal.borderColor = undefined;
-                                $scope.option.series[indexS].data[index1].itemStyle.normal.borderWidth = '0';
+                        $.each(this.option.series, function (indexS, itemS) {
+                            $.each(this.option.series[indexS].data, function (index1, item1) {
+                                this.option.series[indexS].data[index1].itemStyle.normal.borderColor = undefined;
+                                this.option.series[indexS].data[index1].itemStyle.normal.borderWidth = '0';
                             });
                         });
 
                         //删除选中数据
-                        _.remove($scope.p_clickIndex, function (i) {
+                        _.remove(this.p_clickIndex, function (i) {
                             return true;
                         });
-                        _.remove($scope.selected, function (i) {
+                        _.remove(this.selected, function (i) {
                             return true;
                         });
                         //改变图表颜色配置后立即重新加载图表配置
-                        $scope.chart.setOption($scope.option, true);
+                        this.chart.setOption(this.option, true);
                     },
-                    setSubtext: function ($scope, options) {//设置副标题
+                    setSubtext: function (options) {//设置副标题
                         var a = {
                             title: {
                                 subtext: options.text
                             }
                         };
-                        $.extend(true, $scope.option, a);
-                        $scope.chart.setOption(a, false);
+                        $.extend(true, this.option, a);
+                        this.chart.setOption(a, false);
                     }
                 };
                 if (this.chartI) {
@@ -495,6 +495,10 @@
         $scope.chartInteractivity = function () {
             if ($scope.chartI === undefined) {
                 $scope.chartI = $echartsOptions.chartI;
+                //将scope绑定到函数的this上
+                _.each($scope.chartI,function (item,index) {
+                    $scope.chartI[index] = _.bind(item,$scope);
+                });
             }
         };
         $scope.init();

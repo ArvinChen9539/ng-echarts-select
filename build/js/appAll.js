@@ -5,9 +5,26 @@ var app = angular
     .module('app', ['ng-echarts-select']);
 
 app.config(['$echartsOptionsProvider',function($echartsOptionsProvider){
+    //部分可配置项
     //$echartsOptionsProvider.theme = "test";
     /*$echartsOptionsProvider.markColor = 'red';
      $echartsOptionsProvider.markWidth = '5';*/
+
+    //自定义交互事件
+    $echartsOptionsProvider.chartI ={
+        changeChartType :function(){
+            console.log(this);//this就是子scope
+
+            //改变图标类型
+            if(this.option.series[0].type==='bar'){
+                this.option.series[0].type = 'line';
+            }else if(this.option.series[0].type==='line'){
+                this.option.series[0].type = 'bar';
+            }
+            //重新加载图表配置
+            this.chart.setOption(this.option, true);
+        }
+    };
 
 }]);
 

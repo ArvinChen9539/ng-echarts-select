@@ -31,7 +31,9 @@
               click-fun="clickFun"
               legend-x="left"
               bar-chart
+              chart-i="chartI"
               ng-model="chartOptions"></div>
+        <button ng-click="chartI.changeChartType()">自定义交互事件(切换图标类型)</button>
         <div  style="height: 350px;max-width: 750px;margin: auto"
               group-key="2"
               click-fun="clickFun"
