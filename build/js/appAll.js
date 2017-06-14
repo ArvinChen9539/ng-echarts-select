@@ -10,7 +10,7 @@ app.config(['$echartsOptionsProvider', function ($echartsOptionsProvider) {
     /*$echartsOptionsProvider.markColor = 'red';
      $echartsOptionsProvider.markWidth = '5';*/
 
-    //自定义默认图标配置项演示
+    //自定义全局图表配置项演示
     $echartsOptionsProvider.chartOption = {
         legend: {
             textStyle: {
@@ -19,7 +19,7 @@ app.config(['$echartsOptionsProvider', function ($echartsOptionsProvider) {
         }
     };
 
-    //自定义交互事件
+    //自定义交互事件演示
     $echartsOptionsProvider.chartI = {
         changeChartType: function () {
             console.log(this);//this就是子scope
