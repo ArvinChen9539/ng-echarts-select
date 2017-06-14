@@ -61005,12 +61005,19 @@ return jQuery;
                 if (this.chartI) {
                     chartI = $.extend(true, chartI, this.chartI);
                 }
+
+                var chartOption = this.chartOption;
+                var chartItemOption = this.chartItemOption;
+
+
                 return {
                     theme: theme,
                     chartConfig: chartConfig,
                     markColor: markColor,
                     markWidth: markWidth,
-                    chartI: chartI
+                    chartI: chartI,
+                    chartOption: chartOption,
+                    chartItemOption: chartItemOption
                 }
             };
         }]);
@@ -61137,7 +61144,9 @@ return jQuery;
                     }
                 }
             };
-
+            if ($echartsOptions.chartOption) {
+                option = $.extend(true, option, $echartsOptions.chartOption);
+            }
             var dataItem = {
                 name: '',
                 value: '',
@@ -61148,6 +61157,9 @@ return jQuery;
                     }
                 }
             };
+            if ($echartsOptions.chartItemOption) {
+                dataItem = $.extend(true, dataItem, $echartsOptions.chartItemOption);
+            }
 
 
             //特殊图表配置
@@ -61282,7 +61294,7 @@ return jQuery;
                             return true;
                         }
                     });
-                }else {
+                } else {
                     //params.event.event.stopPropagation();
                 }
             }
@@ -61442,8 +61454,8 @@ return jQuery;
             if ($scope.chartI === undefined) {
                 $scope.chartI = $echartsOptions.chartI;
                 //将scope绑定到函数的this上
-                _.each($scope.chartI,function (item,index) {
-                    $scope.chartI[index] = _.bind(item,$scope);
+                _.each($scope.chartI, function (item, index) {
+                    $scope.chartI[index] = _.bind(item, $scope);
                 });
             }
         };
@@ -61457,9 +61469,9 @@ return jQuery;
     app.directive('pieChart', ['$rootScope', '$compile', '$echartsOptions',
         function ($rootScope, $compile, $echartsOptions) {
             return $.extend(true, {
-                scope:{
-                    legendX:'@',//'left'
-                    legendY:'@'
+                scope: {
+                    legendX: '@',//'left'
+                    legendY: '@'
                 },
                 link: function (scope, ele, attrs, parent) {
                     /**
@@ -61476,8 +61488,8 @@ return jQuery;
                             },
                             legend: {
                                 orient: 'vertical',
-                                x: scope.legendX?scope.legendX:'left',
-                                y: scope.legendY?scope.legendY:undefined,
+                                x: scope.legendX ? scope.legendX : 'left',
+                                y: scope.legendY ? scope.legendY : undefined,
                                 data: [],
                             },
                             series: [{
@@ -61524,8 +61536,8 @@ return jQuery;
                 chartType: '@',//图表类型默认bar  可配置为line
                 barWidth: '@',//单个柱状图宽度
                 chartColor: '@',
-                legendX:'@',//'left'
-                legendY:'@'
+                legendX: '@',//'left'
+                legendY: '@'
             },
             link: function (scope, ele, attrs, parent) {
                 /**
@@ -61537,8 +61549,8 @@ return jQuery;
                     scope.option = {
                         //图表模板
                         legend: {
-                            x:scope.legendX?scope.legendX:undefined,
-                            y:scope.legendY?scope.legendY:undefined,
+                            x: scope.legendX ? scope.legendX : undefined,
+                            y: scope.legendY ? scope.legendY : undefined,
                             data: []
                         },
                         xAxis: [
