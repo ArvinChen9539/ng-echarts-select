@@ -8,7 +8,8 @@
     "angular": "^1.6.4",
     "lodash": "^4.17.4",
     "bootstrap": "^3.3.7",
-    "echarts": "^3.4.0"
+    "echarts": "^3.4.0",
+    "jquery": "*"
   },
   "overrides": {
     "echarts": {
