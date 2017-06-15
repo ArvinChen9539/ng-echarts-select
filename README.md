@@ -90,4 +90,4 @@ chart-i可以自定义一些效果
               ng-model="chartOptions"></div>
 ```
 
-具体使用方法和怎样自定义自己的交互事件可以查看demo源代码
+具体使用方法和怎样自定义自己的交互事件可以查看[演示DEMO](https://rawgit.com/ArvinChen9539/ng-echarts-select/master/build/index.html)源代码
