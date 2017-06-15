@@ -1,6 +1,8 @@
 # ng-echarts-select
 echarts作为选择条件时的点击标记效果,多图表交互等
 
+* 安装 bower install ng-echarts-select
+
 [演示DEMO](https://rawgit.com/ArvinChen9539/ng-echarts-select/master/build/index.html)
 
 * 图表配置项全局统一,增加部分基础交互效果
