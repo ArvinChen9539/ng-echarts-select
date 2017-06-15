@@ -60973,7 +60973,8 @@ return jQuery;
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
                 var markWidth = this.markWidth ? this.markWidth : 2;//点击标记的宽度
                 var chartI = {//自定义交互事件
-                    clearSelected: function (scope) {//清除图表选中状态
+                    clearSelected: function () {//清除图表选中状态
+                        var  scope = this;
                         //取消所有标记
                         $.each(scope.option.series, function (indexS, itemS) {
                             $.each(scope.option.series[indexS].data, function (index1, item1) {
@@ -60995,11 +60996,27 @@ return jQuery;
                     setSubtext: function (options) {//设置副标题
                         var a = {
                             title: {
+                                show:true,
                                 subtext: options.text
                             }
                         };
                         $.extend(true, this.option, a);
                         this.chart.setOption(a, false);
+                    },
+                    showLoading:function(seconds,msg){//显示提示遮罩:msg提示消息,seconds显示时长为空时不自动关闭
+                        var scope = this;
+                        scope.chart.showLoading({
+                            text: msg?msg:"正在加载...."
+                        });
+                        if(seconds){
+                            setTimeout(function(){
+                                scope.chart.hideLoading();
+                            },seconds);
+                        }
+                    },
+                    hideLoading:function(){//关闭遮罩
+                        this.chart.hideLoading();
+
                     }
                 };
                 if (this.chartI) {
@@ -61107,7 +61124,7 @@ return jQuery;
                         return true;
                     }
                     //清除图表选中状态
-                    item.scope.chartI.clearSelected(item.scope);
+                    item.scope.chartI.clearSelected();
                 });
                 scope.selectedRes = angular.copy(scope.selected);
             }
@@ -61452,7 +61469,7 @@ return jQuery;
          */
         $scope.chartInteractivity = function () {
             if ($scope.chartI === undefined) {
-                $scope.chartI = $echartsOptions.chartI;
+                $scope.chartI = angular.copy($echartsOptions.chartI);
                 //将scope绑定到函数的this上
                 _.each($scope.chartI, function (item, index) {
                     $scope.chartI[index] = _.bind(item, $scope);

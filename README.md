@@ -72,3 +72,22 @@ app.directive('exampleChart', ['$echartsOptions', function ($echartsOptions) {
     }, $echartsOptions.chartConfig);
 }]);
 ```  
+## chart.I
+chart-i可以自定义一些效果
+
+如内置的:
+* clearSelected() 清除图表上的选中状态
+* setSubtext({text:'''}) 设置图表副标题
+* showLoading(seconds,msg) 显示遮罩层 seconds:显示时长,msg提示信息
+* hideLoading() 关闭遮罩
+
+```html
+<button ng-click="chartI.changeChartType()">自定义交互事件(清除选中)</button>
+<div  style="height: 350px;max-width: 750px;margin: auto"
+              click-fun="clickFun"
+              pie-chart
+              chart-i="chartI"
+              ng-model="chartOptions"></div>
+```
+
+具体使用方法和怎样自定义自己的交互事件可以查看demo源代码

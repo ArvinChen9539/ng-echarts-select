@@ -19,6 +19,12 @@ app.config(['$echartsOptionsProvider', function ($echartsOptionsProvider) {
         }
     };
 
+    //内置chartI函数
+    // 清除图表上的选中状态 clearSelected
+    // 设置副标题 setSubtext
+    // 显示遮罩 showLoading *seconds 显示时长*msg 提示信息
+    // 关闭遮罩 hideLoading
+
     //自定义交互事件演示
     $echartsOptionsProvider.chartI = {
         changeChartType: function () {
