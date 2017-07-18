@@ -38,6 +38,14 @@ app.config(['$echartsOptionsProvider', function ($echartsOptionsProvider) {
             }
             //重新加载图表配置
             this.chart.setOption(this.option, true);
+        },
+        defaultClick: function(i){
+            if(!this.selected){
+                this.selected = [];
+            }
+            this.parent.scope.clickMark({seriesIndex:0,dataIndex:0},this);
+            //重新加载图表配置
+            this.chart.setOption(this.option, true);
         }
     };
 
@@ -84,10 +92,13 @@ app.controller('chartDemoCtrl', ['$scope',
         $scope.chartOptions = {name: '测1', options: [{name:'1',value: 10}, {name:'2',value: 20},{name:'3',value: 30}]};
         $scope.clickFun = function () {
             console.log(arguments);
+            console.log($scope.t);
         };
         $scope.tc = function(){
             console.log(arguments);
         };
+
+        $scope.selected = [];
         /**
          * 页面数据结构
          * @type {{citys: Array}}

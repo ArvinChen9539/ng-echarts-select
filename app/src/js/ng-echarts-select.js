@@ -608,9 +608,15 @@
                 barWidth: '@',//单个柱状图宽度
                 chartColor: '@',
                 legendX: '@',//'left'
-                legendY: '@'
+                legendY: '@',
+                backgroundColor: '@',//图表背景颜色
+                axisXName: '@',
+                axisYName: '@',
+                noMark:'@',//取消标记
             },
             link: function (scope, ele, attrs, parent) {
+                //禁止标记
+                scope.p_noClickMark = scope.noMark;
                 /**
                  * 数据及事件处理
                  * @param data
@@ -618,6 +624,7 @@
                 scope.prepareChart = function (data) {
                     //图标数据配置模板
                     scope.option = {
+                        backgroundColor: scope.backgroundColor ? scope.backgroundColor : null,
                         //图表模板
                         legend: {
                             x: scope.legendX ? scope.legendX : undefined,
@@ -626,12 +633,14 @@
                         },
                         xAxis: [
                             {
+                                name: scope.axisXName ? scope.axisXName : null,
                                 type: 'category',
                                 data: [],
                             }
                         ],
                         yAxis: [
                             {
+                                name: scope.axisYName ? scope.axisYName : null,
                                 type: 'value'
                             }
                         ],
@@ -662,10 +671,135 @@
                         }
                         scope.option.xAxis[0].data.push(item[name]);
                         scope.option.series[0].data.push({
-                            value: parseFloat(item[value]).toFixed(1),
+                            value: item[value],
                             name: item[name],
                             id: item[id]
                         });
+                    });
+                };
+                //初始化图表并创建监听事件
+                parent.initChart(ele, scope);
+            }
+        }, $echartsOptions.chartConfig);
+    }]);
+
+    /**
+     * 共用多条折线图或柱状图
+     * * 参数格式data={name:'名称',options:[{name:'',value:'',id:"用来区分点击的区块如某id"}]}
+     */
+    app.directive('linesChart', ['$rootScope', '$echartsOptions', function ($rootScope, $echartsOptions) {
+        return $.extend(true, {
+            controller: "chartCtrl",
+            scope: {
+                chartType: '@',//图表类型默认bar  可配置为line
+                barWidth: '@',//单个柱状图宽度
+                chartColor: '@',
+                legendX: '@',//'left'
+                legendY: '@',
+                backgroundColor: '@',//图表背景颜色
+                axisXName: '@',
+                axisYName: '@',
+                noMark:'@',//取消标记
+            },
+            link: function (scope, ele, attrs, parent) {
+                //禁止标记
+                scope.p_noClickMark = scope.noMark;
+                /**
+                 * 数据及事件处理
+                 * @param data
+                 */
+                scope.prepareChart = function (data) {
+                    //图标数据配置模板
+                    scope.option = {
+                        backgroundColor: scope.backgroundColor ? scope.backgroundColor : null,
+                        //图表模板
+                        legend: {
+                            x: scope.legendX ? scope.legendX : undefined,
+                            y: scope.legendY ? scope.legendY : undefined,
+                            data: [],
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        grid:{
+                            left:50, right:50
+                        },
+                        xAxis: [
+                            {
+                                name: scope.axisXName ? scope.axisXName : null,
+                                type: 'category',
+                                data: [],
+                                show: true,
+                                axisTick: {
+                                    show: false
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        type: 'dashed'
+                                    }
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                name: scope.axisYName ? scope.axisYName : null,
+                                type: 'value',
+                                splitLine: {
+                                    show: true,
+                                    interval: 'auto',
+                                    lineStyle: {
+                                        color: ['#464d55'],
+                                        width: 1,
+                                        type: 'dashed'
+                                    }
+                                },
+                                axisTick: {
+                                    show: false
+                                },
+                                axisLine:{
+                                    show:false
+                                }
+                            }
+                        ],
+                        series: []
+                    };
+
+
+                    _.each(data, function (item) {
+                        var itemSeries = {
+                            barWidth: scope.barWidth ? scope.barWidth : undefined,
+                            name: item.name,
+                            type: scope.chartType ? scope.chartType : 'bar',
+                            data: [],
+                            symbolSize: 8,
+                            itemStyle: {
+                                normal: {
+                                    color: item.color,
+                                    barBorderRadius: 0
+                                }
+                            }
+                        };
+                        scope.option.legend.data.push(item.name);
+
+                        $.each(item.options, function (index, item) {
+                            var name = 'name', value = 'value', id = 'id';
+                            if (scope.attrName) {
+                                name = scope.attrName.name ? scope.attrName.name : name;
+                                value = scope.attrName.value ? scope.attrName.value : value;
+                                id = scope.attrName.id ? scope.attrName.id : id;
+                            }
+
+                            if (!_.includes(scope.option.xAxis[0].data, item[name])) {
+                                scope.option.xAxis[0].data.push(item[name]);
+                            }
+                            itemSeries.data.push({
+                                //value: parseFloat(item[value]).toFixed(1),
+                                value: item[value],
+                                name: item[name],
+                                id: item[id]
+                            });
+                        });
+                        scope.option.series.push(itemSeries);
                     });
                 };
                 //初始化图表并创建监听事件

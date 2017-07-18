@@ -38,6 +38,14 @@ app.config(['$echartsOptionsProvider', function ($echartsOptionsProvider) {
             }
             //重新加载图表配置
             this.chart.setOption(this.option, true);
+        },
+        defaultClick: function(i){
+            if(!this.selected){
+                this.selected = [];
+            }
+            this.parent.scope.clickMark({seriesIndex:0,dataIndex:0},this);
+            //重新加载图表配置
+            this.chart.setOption(this.option, true);
         }
     };
 
