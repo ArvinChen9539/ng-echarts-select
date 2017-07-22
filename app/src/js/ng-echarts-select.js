@@ -22,6 +22,7 @@
                         attrName: '=',//自定义属性名称
                         chartI: '=?',//交互集合
                         styleOption: '@',//图表宽高设置
+                        noMark:'@'//禁止标记
                     }
                 };
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
@@ -377,6 +378,9 @@
          * @param scope
          */
         this.initChart = function (ele, scope) {
+            if(scope.noMark!=undefined){
+                scope.p_noClickMark = scope.noMark;
+            }
             //初始化图表样式
             scope.$watch('styleOption', function (s) {
                 if (s) {
@@ -542,7 +546,8 @@
             return $.extend(true, {
                 scope: {
                     legendX: '@',//'left'
-                    legendY: '@'
+                    legendY: '@',
+                    legendOrient:'@'
                 },
                 link: function (scope, ele, attrs, parent) {
                     /**
@@ -558,7 +563,7 @@
                                 formatter: "{a} <br/>{b} : {c} ({d}%)"
                             },
                             legend: {
-                                orient: 'vertical',
+                                orient: scope.legendOrient ? scope.legendOrient : 'vertical',
                                 x: scope.legendX ? scope.legendX : 'left',
                                 y: scope.legendY ? scope.legendY : undefined,
                                 data: [],
@@ -612,11 +617,9 @@
                 backgroundColor: '@',//图表背景颜色
                 axisXName: '@',
                 axisYName: '@',
-                noMark:'@',//取消标记
+                legendOrient:'@'
             },
             link: function (scope, ele, attrs, parent) {
-                //禁止标记
-                scope.p_noClickMark = scope.noMark;
                 /**
                  * 数据及事件处理
                  * @param data
@@ -627,6 +630,7 @@
                         backgroundColor: scope.backgroundColor ? scope.backgroundColor : null,
                         //图表模板
                         legend: {
+                            orient: scope.legendOrient ? scope.legendOrient : undefined,
                             x: scope.legendX ? scope.legendX : undefined,
                             y: scope.legendY ? scope.legendY : undefined,
                             data: []
@@ -699,11 +703,9 @@
                 backgroundColor: '@',//图表背景颜色
                 axisXName: '@',
                 axisYName: '@',
-                noMark:'@',//取消标记
+                legendOrient:'@'
             },
             link: function (scope, ele, attrs, parent) {
-                //禁止标记
-                scope.p_noClickMark = scope.noMark;
                 /**
                  * 数据及事件处理
                  * @param data
@@ -714,6 +716,7 @@
                         backgroundColor: scope.backgroundColor ? scope.backgroundColor : null,
                         //图表模板
                         legend: {
+                            orient: scope.legendOrient ? scope.legendOrient : undefined,
                             x: scope.legendX ? scope.legendX : undefined,
                             y: scope.legendY ? scope.legendY : undefined,
                             data: [],
