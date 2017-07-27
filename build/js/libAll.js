@@ -61335,6 +61335,10 @@ return jQuery;
             });
             //为了能在ctrl中获取父scope
             scope.parent = this;
+            //若ngModel不为空 将chartI放入ngModel中
+            if(scope.ngModel){
+                scope.ngModel.$chartI = scope.chartI;
+            }
             //保存子scope到父指令
             if (scope.groupKey && !_.includes($scope.childScopeKeys, scope.groupKey)) {
                 $scope.childScopes.push({key: scope.groupKey, scope: scope});
