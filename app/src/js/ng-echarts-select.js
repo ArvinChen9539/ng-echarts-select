@@ -22,7 +22,8 @@
                         attrName: '=',//自定义属性名称
                         chartI: '=?',//交互集合
                         styleOption: '@',//图表宽高设置
-                        noMark:'@'//禁止标记
+                        noMark:'@',//禁止标记
+                        noClickRender:'@'//禁止点击重新渲染
                     }
                 };
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
@@ -381,6 +382,9 @@
             if(scope.noMark!=undefined){
                 scope.p_noClickMark = scope.noMark;
             }
+            if(scope.noClickRender!=undefined){
+                scope.p_noClickRender = scope.noClickRender;
+            }
             //初始化图表样式
             scope.$watch('styleOption', function (s) {
                 if (s) {
@@ -490,8 +494,8 @@
                                 scope.selectedRes = angular.copy(scope.selected);
                             }
                             //改变图表颜色配置后立即重新加载图表配置
-                            //饼图不用重设配置
-                            if (!$scope.isChart('pie', scope)) {
+                            //饼图不用重设配置,手动设置不渲染的不执行渲染操作
+                            if (!$scope.isChart('pie', scope)&&!scope.p_noClickRender) {
                                 scope.chart.setOption(scope.option, true);
                             }
                             $rootScope.SAFE_APPLY();
