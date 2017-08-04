@@ -23,12 +23,14 @@
     <H5>组合选中(可多选)</H5>
     <button ng-click="testI.clearSelected();testII.clearSelected()">清除选中</button>
     <br/>
-    <button ng-click="testI.showLoading(seconds,titleT);testII.showLoading(seconds)">显示遮罩</button>
+    <button ng-click="testI.showLoading(titleT,seconds);testII.showLoading(undefined,seconds)">显示遮罩</button>
     &nbsp;显示时长(ms)：<input ng-model="seconds" style="width: 50px">&nbsp;提示信息：<input ng-init="titleT='自定义提示信息'" ng-model="titleT" style="width: 150px" >
     <br/>
     <button ng-click="testI.hideLoading();testII.hideLoading()">关闭遮罩</button>
     <br/>
     <button ng-click="testI.changeChartType()">自定义交互事件(切换图标类型)</button>
+    <button ng-click="testI.showMsg('暂无数据','my-msg')">自定义交互事件(显示自定义提示信息)</button>
+    <button ng-click="testI.hideMsg()">自定义交互事件(关闭自定义提示信息)</button>
     <div chart-home
          selecteds="t"
          click-fun="tc"

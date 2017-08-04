@@ -61005,7 +61005,7 @@ return jQuery;
                         $.extend(true, this.option, a);
                         this.chart.setOption(a, false);
                     },
-                    showLoading:function(seconds,msg){//显示提示遮罩:msg提示消息,seconds显示时长为空时不自动关闭
+                    showLoading:function(msg,seconds){//显示提示遮罩:msg提示消息,seconds显示时长为空时不自动关闭
                         var scope = this;
                         scope.chart.showLoading({
                             text: msg?msg:"正在加载...."
@@ -61019,6 +61019,36 @@ return jQuery;
                     hideLoading:function(){//关闭遮罩
                         this.chart.hideLoading();
 
+                    },
+                    showMsg:function(msg,msgClass){
+                        var jq = $(this.$ele);
+                        _.each(jq.children(),function(item){
+                            $(item).hide();
+                        });
+                        msgClass = msgClass?msgClass:'';
+                        var width = jq.width();
+                        var height = jq.height();
+                        /*var backgroundColor = jq.css('background-color');
+                        console.log(backgroundColor);*/
+                        this.$ele.append("<div class='echartMsg "+msgClass+"' style='" +
+                            "width: "+width+"px;" +
+                            "height: "+height+"px;" +
+                            "line-height:"+height+"px;" +
+                            "text-align: center;" +
+                            "color: #ffffff;" +
+                            "font-size: 20px;" +
+                            "position: absolute;\n" +
+                            "left: 50%;\n" +
+                            "top: 50%;\n" +
+                            "margin-left: -"+width/2+"px;\n" +
+                            "margin-top: -"+height/2+"px;'>"+(msg?msg:"暂无数据")+"</div>")
+                    },
+                    hideMsg:function(){
+                        var jq = $(this.$ele);
+                        _.each(jq.find(".echartMsg"),function(item){
+                            $(item).remove();
+                        });
+                        jq.children().first().show();
                     }
                 };
                 if (this.chartI) {
@@ -61339,6 +61369,7 @@ return jQuery;
             });
             //为了能在ctrl中获取父scope
             scope.parent = this;
+            scope.$ele = ele;
             //若ngModel不为空 将chartI放入ngModel中
             if(scope.ngModel){
                 scope.ngModel.$chartI = scope.chartI;
