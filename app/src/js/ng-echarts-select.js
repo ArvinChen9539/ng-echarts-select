@@ -518,6 +518,14 @@
                     $compile(ele.contents())(scope);
                 }
             }, true);
+
+            //宽度变化时自动更新图表宽度
+            scope.$watch(function (){return $(ele).width();}, function(newValue) {
+                if (newValue){
+                    scope.chart.resize({width: newValue});
+                    $rootScope.SAFE_APPLY();
+                }
+            }, true);
         };
     }]);
 //==============================================共用指令str=====================================================

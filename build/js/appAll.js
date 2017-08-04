@@ -63,6 +63,7 @@ app.directive('exampleChart', ['$echartsOptions', function ($echartsOptions) {
             //p_noSeriesItemE 是否组合默认seriesItem参数 delft:false(组合)
             //p_noDataE 是否组合标准data配置 delft:false(组合) 点击标记的重要参数
             //p_noClickMark 是否处理点击标记逻辑控制 delft:false(标记)
+            //p_noClickRender 是否禁止点击重新渲染 delft:false(不禁止)
             /**
              * 数据及事件处理
              * @param data
