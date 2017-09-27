@@ -7,7 +7,7 @@
 app.controller('chartDemoCtrl', ['$scope',
     function ($scope) {
         $scope.test = 11111;
-        $scope.chartOptions = {name: '测1', options: [{name:'1',value: 10}, {name:'2',value: 20},{name:'3',value: 30}]};
+        $scope.chartOptions = {name: '测1', options: []};
         $scope.clickFun = function () {
             console.log(arguments);
             console.log($scope.t);
@@ -23,11 +23,19 @@ app.controller('chartDemoCtrl', ['$scope',
          */
         $scope.pageData = {};
 
+        $scope.loadData = function(){
+            $scope.chartOptions.options = [];
+            for(var i=1;i<=5;i++){
+                $scope.chartOptions.options.push({name:i,value: _.random(50,100)});
+            }
+        };
+
         /**
          * 入口
          * @param data
          */
         $scope.init = function () {
+            $scope.loadData();
 
         };
 
