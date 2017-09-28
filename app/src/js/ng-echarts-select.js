@@ -24,13 +24,27 @@
                         styleOption: '@',//图表宽高设置
                         noMark: '@',//禁止标记
                         noClickRender: '@',//禁止点击重新渲染
-                        colors:'=',//可选颜色
-                        backgroundColor:'@'//图表背景颜色
+                        colors: '=',//可选颜色
+                        backgroundColor: '@'//图表背景颜色
                     }
                 };
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
                 var markWidth = this.markWidth ? this.markWidth : 2;//点击标记的宽度
                 var chartI = {//自定义交互事件
+                    selected: function (selectedList) {//设置选中
+                        if(!_.isArray(selectedList)){
+                            selectedList = [selectedList];
+                        }
+                        var scope = this;
+                        _.each(selectedList, function (item) {
+                            scope.parent.scope.clickMark({
+                                seriesIndex: item.seriesIndex,
+                                dataIndex: item.dataIndex
+                            }, scope);
+                        });
+                        scope.chart.setOption(scope.option, true);
+
+                    },
                     clearSelected: function () {//清除图表选中状态
                         var scope = this;
                         //取消所有标记
@@ -176,8 +190,8 @@
                 isCancel: '@',//是否禁止最后一个取消标记
                 isMultiple: '@',//图表是否多选//点击回调的选中参数不适用与异步加载的图标(如点击第一个图标第二个图标会重新加载  图一图二组合选中的情况)
                 clickFun: '=',
-                colors:'=',
-                backgroundColor:'@'
+                colors: '=',
+                backgroundColor: '@'
             },
             controller: "chartHomeCtrl"
         };
@@ -356,7 +370,12 @@
             //设置选中颜色
             if (!_.includes(scope.p_clickIndex, params.dataIndex + "-" + params.seriesIndex)) {
                 if (scope.isMultiple || $scope.isMultiple) {//是否多选
-                    scope.selected.push(params);
+                    if (scope.selected) {
+                        scope.selected.push(params);
+                    } else {
+                        scope.selected = [];
+                        scope.selected.push(params);
+                    }
                     scope.p_clickIndex.push(params.dataIndex + "-" + params.seriesIndex);
                     //设置边框
                     if (!$scope.isChart('pie', scope)) {
@@ -385,7 +404,7 @@
                     }
                     //设置标记颜色的位置
                     scope.p_clickIndex[0] = params.dataIndex + "-" + params.seriesIndex;
-                    if (scope.selected[0]) {
+                    if (scope.selected && scope.selected[0]) {
                         scope.selected[0] = params;
                     } else {
                         scope.selected = [];
@@ -510,16 +529,16 @@
                         scope.option = $.extend(true, $scope.config().chartConfig.pie.option, scope.option);
                     }
                     //设置图表颜色列表
-                    if($scope.colors){
+                    if ($scope.colors) {
                         scope.option.color = $scope.colors;
                     }
-                    if(scope.colors){
+                    if (scope.colors) {
                         scope.option.color = scope.colors;
                     }
-                    if($scope.backgroundColor){
+                    if ($scope.backgroundColor) {
                         scope.option.backgroundColor = $scope.backgroundColor;
                     }
-                    if(scope.backgroundColor){
+                    if (scope.backgroundColor) {
                         scope.option.backgroundColor = scope.backgroundColor;
                     }
 
@@ -668,7 +687,12 @@
                             /*  if(scope.option.legend.data.length==5){
                              scope.option.legend.data.push("");
                              }*/
-                            scope.option.series[0].data.push({value: item[value], name: item[name], id: item[id],params: item[params]});
+                            scope.option.series[0].data.push({
+                                value: item[value],
+                                name: item[name],
+                                id: item[id],
+                                params: item[params]
+                            });
                         });
                         //data-->option
                     };
@@ -744,7 +768,7 @@
                     scope.option.series[0].name = data.name;
                     scope.option.legend.data.push(data.name);
                     $.each(data.options, function (index, item) {
-                        var name = 'name', value = 'value', id = 'id',params = "params";
+                        var name = 'name', value = 'value', id = 'id', params = "params";
                         if (scope.attrName) {
                             name = scope.attrName.name ? scope.attrName.name : name;
                             value = scope.attrName.value ? scope.attrName.value : value;
@@ -864,7 +888,7 @@
                         scope.option.legend.data.push(item.name);
 
                         $.each(item.options, function (index, item) {
-                            var name = 'name', value = 'value', id = 'id',params = "params";
+                            var name = 'name', value = 'value', id = 'id', params = "params";
                             if (scope.attrName) {
                                 name = scope.attrName.name ? scope.attrName.name : name;
                                 value = scope.attrName.value ? scope.attrName.value : value;
