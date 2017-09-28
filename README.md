@@ -74,14 +74,39 @@ app.directive('exampleChart', ['$echartsOptions', function ($echartsOptions) {
     }, $echartsOptions.chartConfig);
 }]);
 ```  
+
+## 公用指令属性
+### 这些属性新建的指令默认就会有
+```js
+scope: {
+         ngModel: '=',
+         chartTitle: '@',//图表标题
+         chartSubtext: '@',//副标题
+         clickFun: '=',//点击函数(第一个参数是点击的对象,第二个参数是可能用掉的其他信息,第三个参数是当前选中的对象数组)
+         isCancel: '@',//是否禁止最后一个取消标记
+         isMultiple: '@',//图表是否多选
+         groupKey: '@',//分组关键字-用于在父指令中区分不同的子指令(如果没有这个属性各个图表不会相互影响,如选中一个图表时清除另一个图表的选中数据等)
+         attrName: '=',//自定义属性名称
+         chartI: '=?',//交互集合
+         styleOption: '@',//图表宽高设置
+         noMark: '@',//禁止标记
+         noClickRender: '@',//禁止点击重新渲染
+         colors: '=',//可选颜色
+         backgroundColor: '@'//图表背景颜色
+         }
+```
+
 ## chart.I
 chart-i可以自定义一些效果
 
 如内置的:
+* selected({seriesIndex:0,dataIndex:0}||[]) 设置图表选中
 * clearSelected() 清除图表上的选中状态
 * setSubtext({text:'''}) 设置图表副标题
-* showLoading(seconds,msg) 显示遮罩层 seconds:显示时长,msg提示信息
+* showLoading(msg,seconds) 显示遮罩层 seconds:显示时长,msg提示信息
 * hideLoading() 关闭遮罩
+* showMsg(msg,msgClass) 设置提示信息 默认 暂无数据
+* hideMsg() 关闭提示信息显示
 
 ```html
 <button ng-click="chartI.changeChartType()">自定义交互事件(清除选中)</button>
