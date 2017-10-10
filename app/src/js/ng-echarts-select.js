@@ -31,8 +31,11 @@
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
                 var markWidth = this.markWidth ? this.markWidth : 2;//点击标记的宽度
                 var chartI = {//自定义交互事件
+                    getScope: function () {//用于获取指令中的scope
+                        return this;
+                    },
                     selected: function (selectedList) {//设置选中
-                        if(!_.isArray(selectedList)){
+                        if (!_.isArray(selectedList)) {
                             selectedList = [selectedList];
                         }
                         var scope = this;
@@ -42,7 +45,7 @@
                                 dataIndex: item.dataIndex
                             }, scope);
                         });
-                        scope.chart.setOption(scope.option, true);
+                        scope.chart.setOption(scope.option);
 
                     },
                     clearSelected: function () {//清除图表选中状态
@@ -50,8 +53,13 @@
                         //取消所有标记
                         $.each(scope.option.series, function (indexS, itemS) {
                             $.each(scope.option.series[indexS].data, function (index1, item1) {
-                                scope.option.series[indexS].data[index1].itemStyle.normal.borderColor = undefined;
-                                scope.option.series[indexS].data[index1].itemStyle.normal.borderWidth = '0';
+                                if (!scope.parent.scope.isChart('pie', scope)) {
+                                    scope.option.series[indexS].data[index1].itemStyle.normal.borderColor = undefined;
+                                    scope.option.series[indexS].data[index1].itemStyle.normal.borderWidth = '0';
+                                } else {
+                                    scope.option.series[indexS].data[index1].selected = false;
+                                }
+
                             });
                         });
 
@@ -63,7 +71,7 @@
                             return true;
                         });
                         //改变图表颜色配置后立即重新加载图表配置
-                        scope.chart.setOption(scope.option, true);
+                        scope.chart.setOption(scope.option);
                     },
                     setSubtext: function (options) {//设置副标题
                         var a = {
@@ -73,20 +81,30 @@
                             }
                         };
                         $.extend(true, this.option, a);
-                        this.chart.setOption(a, false);
+                        this.chart.setOption(a);
                     },
-                    showLoading: function (msg, seconds) {//显示提示遮罩:msg提示消息,seconds显示时长为空时不自动关闭
+                    showLoading: function (msg, seconds, isDelay) {//显示提示遮罩:msg提示消息,seconds显示时长为空时不自动关闭
                         var scope = this;
-                        scope.chart.showLoading({
-                            text: msg ? msg : "正在加载...."
-                        });
-                        if (seconds) {
+                        if (isDelay) {
+                            scope.$loadKey = setTimeout(function () {
+                                scope.chart.showLoading({
+                                    text: msg ? msg : "正在加载...."
+                                });
+                            }, seconds);
+                        } else {
+                            scope.chart.showLoading({
+                                text: msg ? msg : "正在加载...."
+                            });
+                        }
+                        if (seconds && !isDelay) {
                             setTimeout(function () {
                                 scope.chart.hideLoading();
                             }, seconds);
                         }
                     },
                     hideLoading: function () {//关闭遮罩
+                        //立即取消延迟显示的加载效果
+                        clearTimeout(this.$loadKey);
                         this.chart.hideLoading();
 
                     },
@@ -111,7 +129,7 @@
                             "left: 50%;\n" +
                             "top: 50%;\n" +
                             "margin-left: -" + width / 2 + "px;\n" +
-                            "margin-top: -" + height / 2 + "px;'>" + (msg ? msg : "暂无数据") + "</div>")
+                            "margin-top: -" + height / 2 + "px;'>" + (msg ? msg : "暂无数据") + "</div>");
                     },
                     hideMsg: function () {
                         var jq = $(this.$ele);
@@ -137,6 +155,40 @@
                     chartI: chartI,
                     chartOption: chartOption,
                     chartItemOption: chartItemOption
+                };
+            };
+        }]);
+    //操作chartI的工具函数
+    app.factory('$chartI', ['$timeout',
+        function ($timeout) {
+            return function () {
+                if (_.isEmpty(arguments)) {
+                    console.error('参数异常,第一个参数是图表ngModel,ngModel必须先初始化');
+                    return;
+                }
+                var params = arguments;
+
+                if (_.isFunction(params[1])) {
+                    $timeout(function () {
+                        var ngModel = params[0];
+                        params[1](ngModel.$chartI, ngModel);
+                    });
+                    return;
+                }
+                if (_.isString(params[1])) {
+                    $timeout(function () {
+                        var ngModel = params[0];
+                        if (!ngModel) {
+                            console.error('参数异常,使用时请先初始化ngModel!');
+                            return;
+                        }
+                        //判断要调用的函数是否存在
+                        if (!ngModel.$chartI[params[1]]) {
+                            console.error('参数异常,交互函数\"' + params[1] + '\"不存在!');
+                            return;
+                        }
+                        _.spread(ngModel.$chartI[params[1]])(_.slice(params, 2, params.length));
+                    });
                 }
             };
         }]);
@@ -152,7 +204,7 @@
         $rootScope.GET_O = function (url, obj) {
             var o = _.at(obj ? obj : this, url)[0];
             if (!o) {
-                console.log('找不到对象');
+                console.log('找不到对象\"' + url + '\"');
                 return _.noop();
             }
             return o;
@@ -256,7 +308,7 @@
                     x: 'center'
                 },
                 grid: {
-                    top: 50,
+                    top: 50
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -301,7 +353,7 @@
                     type: ['pie'],
                     option: {},
                     series: {
-                        selectedMode: "",
+                        selectedMode: ""
                     }
                 }
             };
@@ -310,7 +362,7 @@
              * 点击标记必要配置
              * @param s 子scope
              * @param isSeries 是否以seriesIndex标记颜色(默认dataIndex)
-             * @returns {{itemStyle: {normal: {color: chartHomeCtrl.itemStyle.normal.color}}}}
+             * @returns {{barMaxWidth: number, barCategoryGap: string, selectedMode: (string|*|string), selectedOffset: number, itemStyle: {normal: {}}}}
              */
             function seriesItem(options) {
                 return {//默认样式配置
@@ -318,24 +370,9 @@
                     barCategoryGap: '30%',
                     selectedMode: options.selectedMode,
                     selectedOffset: 10,
-                    itemStyle: {
-                        normal: {
-                            /*color: function (params) {
-                             //_.replace('#4488BB'.colorRgb(),")",",1)");
-                             var i = COLOR_LIST[isSeries ? params.seriesIndex : params.dataIndex];
-                             if (!_.isArray(s.p_clickIndex) || s.p_clickIndex.length == 0) {//没有选中透明度全部为1
-                             return i;
-                             }
-                             if (_.includes(s.p_clickIndex, params.dataIndex + "-" + params.seriesIndex)) {//选中的透明度为1
-                             return 'rgba(0,0,0,0.5)';
-                             // return _.replace(i.colorRgb('rgba'), ")", ",0.2)");
-                             }
-                             //未选中的透明度为0.5
-                             return _.replace(i.colorRgb('rgba'), ")", ",1)");
-                             }*/
-                        }
-                    },
-
+                    itemStyle: {//标记必要,不能为空
+                        normal: {}
+                    }
                 };
             }
 
@@ -343,7 +380,7 @@
                 chartConfig: chartConfig,
                 dataItem: dataItem,
                 option: option,
-                seriesItem: seriesItem,
+                seriesItem: seriesItem
             };
         };
 
@@ -364,9 +401,20 @@
         /**
          * 点击标记逻辑处理
          * @param params
-         * @param socpe
+         * @param scope
          */
         $scope.clickMark = function (params, scope) {
+            var data = $rootScope.GET_O('series[' + params.seriesIndex + '].data[' + params.dataIndex + ']', scope.option);
+            if (_.isUndefined(data)) {
+                console.error('数据异常,找不到需要的数据项!');
+                return;
+            }
+            var itemStyleNormal = $rootScope.GET_O('itemStyle.normal', data);
+            //不是饼图并且数据项为空
+            if (!$scope.isChart('pie', scope)&&_.isUndefined(itemStyleNormal)) {
+                console.error('数据异常,找不到需要的数据项!');
+                return;
+            }
             //设置选中颜色
             if (!_.includes(scope.p_clickIndex, params.dataIndex + "-" + params.seriesIndex)) {
                 if (scope.isMultiple || $scope.isMultiple) {//是否多选
@@ -390,6 +438,7 @@
                         $.each(scope.option.series[index].data, function (index1, item1) {
                             if (!$scope.isChart('pie', scope)) {
                                 scope.option.series[index].data[index1].itemStyle.normal.borderColor = undefined;
+                                scope.option.series[index].data[index1].itemStyle.normal.borderWidth = '0';
                             } else {
                                 scope.option.series[index].data[index1].selected = false;
                             }
@@ -430,8 +479,6 @@
                             return true;
                         }
                     });
-                } else {
-                    //params.event.event.stopPropagation();
                 }
             }
         };
@@ -466,13 +513,12 @@
                 $scope.childScopes.push({key: scope.groupKey, scope: scope});
             }
 
-            //副标题设置
-            /*scope.$watch('chartSubtext', function (data) {
-             console.log(data);
-             });*/
-
             //创建监听事件
             scope.$watch('ngModel', function (data) {
+                //若ngModel不为空 将chartI放入ngModel中
+                if (scope.ngModel && _.keys(scope.ngModel.$chartI).length === 0) {
+                    scope.ngModel.$chartI = scope.chartI;
+                }
                 if (!scope.chart) {
                     scope.chart = echarts.init(ele[0], $echartsOptions.theme);
                 } else {
@@ -573,7 +619,7 @@
                             //改变图表颜色配置后立即重新加载图表配置
                             //饼图不用重设配置,手动设置不渲染的不执行渲染操作
                             if (!scope.p_noClickRender) {
-                                scope.chart.setOption(scope.option, true);
+                                scope.chart.setOption(scope.option);
                             }
                             $rootScope.SAFE_APPLY();
 
@@ -590,7 +636,9 @@
                     }
 
                     //设置图表配置
-                    scope.chart.setOption(scope.option, true);
+                    if (scope.option.series) {
+                        scope.chart.setOption(scope.option);
+                    }
                     //执行数据操作执行后
                     $compile(ele.contents())(scope);
                 }
@@ -621,7 +669,7 @@
          * 图表交互事件定义
          */
         $scope.chartInteractivity = function () {
-            if ($scope.chartI === undefined) {
+            if ($scope.chartI === undefined || _.keys($scope.chartI).length === 0) {
                 $scope.chartI = angular.copy($echartsOptions.chartI);
                 //将scope绑定到函数的this上
                 _.each($scope.chartI, function (item, index) {
@@ -661,14 +709,14 @@
                                 orient: scope.legendOrient ? scope.legendOrient : 'vertical',
                                 x: scope.legendX ? scope.legendX : 'left',
                                 y: scope.legendY ? scope.legendY : undefined,
-                                data: [],
+                                data: []
                             },
                             series: [{
                                 name: data.name,
                                 type: 'pie',
                                 radius: '55%',
                                 center: ['50%', '60%'],
-                                data: [],
+                                data: []
                             }
                             ]
                         };
@@ -740,7 +788,7 @@
                             {
                                 name: scope.axisXName ? scope.axisXName : null,
                                 type: 'category',
-                                data: [],
+                                data: []
                             }
                         ],
                         yAxis: [
@@ -757,7 +805,7 @@
                             itemStyle: {
 
                                 normal: {
-                                    color: scope.chartColor,
+                                    color: scope.chartColor
                                     /*label: {
                                         show: true, position: 'top'
                                     }*/
