@@ -99,8 +99,8 @@ scope: {
 
 
 ## 自1.2.3版本起增加$chartI服务用于执行chartI中的函数
-要求图表指令上的ng-model先初始化,如$scope.chartOptions = {};之后才可以。
-调用形式 $chartI(图表的ngModel,调用的函数名称,...调用函数需要的参数)。
+* 要求图表指令上的ng-model先初始化,如$scope.chartOptions = {};
+* 调用形式： $chartI('图表的ngModel','调用的函数名称',...调用函数需要的参数)。
 ```js
  $chartI($scope.chartOptions, 'selected', {seriesIndex: 0, dataIndex: 0});
  $chartI($scope.chartOptions, 'showMsg');
