@@ -25,7 +25,8 @@
                         noMark: '@',//禁止标记
                         noClickRender: '@',//禁止点击重新渲染
                         colors: '=',//可选颜色
-                        backgroundColor: '@'//图表背景颜色
+                        backgroundColor: '@',//图表背景颜色
+                        datazoom: '@'
                     }
                 };
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
@@ -40,10 +41,7 @@
                         }
                         var scope = this;
                         _.each(selectedList, function (item) {
-                            scope.parent.scope.clickMark({
-                                seriesIndex: item.seriesIndex,
-                                dataIndex: item.dataIndex
-                            }, scope);
+                            scope.parent.scope.clickMark(item, scope);
                         });
                         scope.chart.setOption(scope.option);
 
@@ -411,7 +409,7 @@
             }
             var itemStyleNormal = $rootScope.GET_O('itemStyle.normal', data);
             //不是饼图并且数据项为空
-            if (!$scope.isChart('pie', scope)&&_.isUndefined(itemStyleNormal)) {
+            if (!$scope.isChart('pie', scope) && _.isUndefined(itemStyleNormal)) {
                 console.error('数据异常,找不到需要的数据项!');
                 return;
             }
@@ -690,7 +688,8 @@
                 scope: {
                     legendX: '@',//'left'
                     legendY: '@',
-                    legendOrient: '@'
+                    legendOrient: '@',
+                    radius: '@'
                 },
                 link: function (scope, ele, attrs, parent) {
                     /**
@@ -714,7 +713,7 @@
                             series: [{
                                 name: data.name,
                                 type: 'pie',
-                                radius: '55%',
+                                radius: scope.radius ? (scope.radius[1] ? scope.radius : scope.radius[0]) : '55%',
                                 center: ['50%', '60%'],
                                 data: []
                             }
@@ -797,6 +796,15 @@
                                 type: 'value'
                             }
                         ],
+                        dataZoom: scope.dataZoom == 'true' ? [
+                            {
+                                // type: 'inside',
+                                type: 'slider',
+                                show: true, //显示滚动条
+                                start: 20, //起始值为0%
+                                end: 80  //结束值为10%
+                            }
+                        ] : undefined,
                         series: [{
                             barWidth: scope.barWidth ? scope.barWidth : undefined,
                             name: '',
@@ -915,6 +923,15 @@
                                 }
                             }
                         ],
+                        dataZoom: scope.datazoom == 'true' ? [
+                            {
+                                // type: 'inside',
+                                type: 'slider',
+                                show: true, //显示滚动条
+                                start: 20, //起始值为0%
+                                end: 80  //结束值为10%
+                            }
+                        ] : undefined,
                         series: []
                     };
 
