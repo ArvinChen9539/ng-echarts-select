@@ -60970,7 +60970,9 @@ var version = '1.2.5';
                         noClickRender: '@',//禁止点击重新渲染
                         colors: '=',//可选颜色
                         backgroundColor: '@',//图表背景颜色
-                        datazoom: '@'
+                        datazoom: '@',
+                        markColor: '@',
+                        markWidth: '@'
                     }
                 };
                 var markColor = this.markColor ? this.markColor : '#33FF33';//点击标记的颜色
@@ -61369,8 +61371,8 @@ var version = '1.2.5';
                     scope.p_clickIndex.push(params.dataIndex + "-" + params.seriesIndex);
                     //设置边框
                     if (!$scope.isChart('pie', scope)) {
-                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderColor = $echartsOptions.markColor;
-                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderWidth = $echartsOptions.markWidth;
+                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderColor = scope.markColor || $echartsOptions.markColor;
+                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderWidth = scope.markWidth || $echartsOptions.markWidth;
                     } else {
                         scope.option.series[params.seriesIndex].data[params.dataIndex].selected = true;
                     }
@@ -61388,8 +61390,8 @@ var version = '1.2.5';
                     });
                     //重新设置边框
                     if (!$scope.isChart('pie', scope)) {
-                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderColor = $echartsOptions.markColor;
-                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderWidth = $echartsOptions.markWidth;
+                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderColor = scope.markColor || $echartsOptions.markColor;
+                        scope.option.series[params.seriesIndex].data[params.dataIndex].itemStyle.normal.borderWidth = scope.markWidth || $echartsOptions.markWidth;
                     } else {
                         scope.option.series[params.seriesIndex].data[params.dataIndex].selected = true;
                     }
