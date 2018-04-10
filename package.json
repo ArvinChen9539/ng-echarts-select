@@ -2,7 +2,8 @@
   "name": "ng-echarts-select",
   "author": "PhysicalPoint",
   "description": "ng-echarts-select",
-  "private": true,
+  "homepage": "https://github.com/ArvinChen9539/ng-echarts-select",
+  "version": "1.2.5",
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -12,6 +13,7 @@
     "gulp": "^3.9.0",
     "gulp-connect": "^5.0.0",
     "gulp-filter": "~5.0.0",
+    "gulp-header": "^2.0.5",
     "gulp-if": "~2.0.1",
     "gulp-jshint": "^2.0.4",
     "gulp-json-editor": "^2.2.1",

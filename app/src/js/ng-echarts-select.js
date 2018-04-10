@@ -1,6 +1,4 @@
-/**
- * Created by ArvinChen9539 on 16/6/29.
- */
+var version = '1.2.5';
 (function (window, angular, undefined) {
     var app = angular
         .module('ng-echarts-select', []).provider('$echartsOptions', [function () {

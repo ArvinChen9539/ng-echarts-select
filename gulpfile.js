@@ -13,7 +13,8 @@ var gulp = require('gulp'),
     //配置参数
     config = require('./config.json'),
     //加载所有gulp模块
-    $ = require("gulp-load-plugins")();
+    $ = require("gulp-load-plugins")(),
+    pkg = require('./package.json');
 
 //控制台参数
 var env = $.util.env.env && config.envs[$.util.env.env] ? $.util.env.env : 'dev';
@@ -73,6 +74,15 @@ gulp.task('html', ['checkJs'], function () {
         libCss: $.filter(['**/lib*.css'], {restore: true})
     };
 
+    var banner = ['/**',
+        ' * <%= pkg.name %> - <%= pkg.description %>',
+        ' * @version v<%= pkg.version %>',
+        ' * @link <%= pkg.homepage %>',
+        ' * @license <%= pkg.license %>',
+        ' * ArvinChen9539',
+        ' */',
+        ''].join('\n');
+
     return gulp.src(config.appPath + '/**/*.html')
         .pipe($.replace('${BASE_PATH}', config.envs[env].BASE_PATH))
         .pipe($.replace('${SERVICE_API_PATH}', config.envs[env].SERVICE_API_PATH))
@@ -87,11 +97,13 @@ gulp.task('html', ['checkJs'], function () {
         .pipe($.replace('${APP_VERSION_TYPE}', config.envs[env].APP_VERSION_TYPE))
         .pipe($.replace('${BASE_PATH}', config.envs[env].BASE_PATH))
         .pipe($.replace('${SYS_NAME}', config.sysName))
+        .pipe($.header(banner, {pkg: pkg}))
         .pipe(filters.appJs.restore)
 
         //css处理
         .pipe(filters.appCss)
         .pipe($.postcss(postCssPlugins))//postcss
+        .pipe($.header(banner, {pkg: pkg}))
         .pipe(filters.appCss.restore)
 
         .pipe(gulp.dest(config.distPath)); //dest hash key json;

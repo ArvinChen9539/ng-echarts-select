@@ -1,4 +1,11 @@
 /**
+ * ng-echarts-select - ng-echarts-select
+ * @version v1.2.5
+ * @link https://github.com/ArvinChen9539/ng-echarts-select
+ * @license 
+ * ArvinChen9539
+ */
+/**
  * Created by ArvinChen9539 on 2017/5/4.
  */
 var app = angular
