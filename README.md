@@ -3,7 +3,7 @@ echarts作为选择条件时的点击标记效果,多图表交互等
 
 * 安装 bower install ng-echarts-select
 
-[演示DEMO](https://rawgit.com/ArvinChen9539/ng-echarts-select/master/build/index.html)
+[演示DEMO](http://jing9539.51vip.biz:38889/)
 
 * 图表配置项全局统一,增加部分基础交互效果
 
@@ -127,4 +127,4 @@ chart-i可以自定义一些效果
               ng-model="chartOptions"></div>
 ```
 
-具体使用方法和怎样自定义自己的交互事件可以查看[演示DEMO](https://rawgit.com/ArvinChen9539/ng-echarts-select/master/build/index.html)源代码
+具体使用方法和怎样自定义自己的交互事件可以查看[演示DEMO](http://jing9539.51vip.biz:38889/)源代码
